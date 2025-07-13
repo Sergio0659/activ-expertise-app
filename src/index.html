@@ -30,32 +30,34 @@
           // Configuration des prix par défaut
           const [priceConfig, setPriceConfig] = useState({
             maison: {
-              '2 pièces': { erp: 120, amiante: 150, termites: 100, metrage: 80, dpe: 200, gaz: 130, electricite: 140, plomb: 110 },
-              '3 pièces': { erp: 140, amiante: 170, termites: 120, metrage: 90, dpe: 220, gaz: 150, electricite: 160, plomb: 130 },
-              '4 pièces': { erp: 160, amiante: 190, termites: 140, metrage: 100, dpe: 240, gaz: 170, electricite: 180, plomb: 150 },
-              '5 pièces': { erp: 180, amiante: 210, termites: 160, metrage: 110, dpe: 260, gaz: 190, electricite: 200, plomb: 170 },
-              '6 pièces': { erp: 200, amiante: 230, termites: 180, metrage: 120, dpe: 280, gaz: 210, electricite: 220, plomb: 190 },
-              '7 pièces': { erp: 220, amiante: 250, termites: 200, metrage: 130, dpe: 300, gaz: 230, electricite: 240, plomb: 210 }
+              '2 pièces': { erp: 35, amiante: 86.25, termites: 86.25, metrage: 97.75, dpe: 103.50, gaz: 97.75, electricite: 80.50, plomb: 103.50 },
+              '3 pièces': { erp: 35, amiante: 97.50, termites: 97.50, metrage: 110.50, dpe: 117, gaz: 110.50, electricite: 91, plomb: 117 },
+              '4 pièces': { erp: 35, amiante: 105, termites: 105, metrage: 119, dpe: 126, gaz: 119, electricite: 98, plomb: 126 },
+              '5 pièces': { erp: 35, amiante: 112.50, termites: 112.50, metrage: 127.50, dpe: 135, gaz: 127.50, electricite: 105, plomb: 135 },
+              '6 pièces': { erp: 35, amiante: 150, termites: 150, metrage: 170, dpe: 180, gaz: 170, electricite: 140, plomb: 180 },
+              '7 pièces': { erp: 35, amiante: 187.50, termites: 187.50, metrage: 212.50, dpe: 225, gaz: 212.50, electricite: 175, plomb: 225 }
             },
             appartement: {
-              '2 pièces': { erp: 100, amiante: 130, termites: 80, metrage: 70, dpe: 180, gaz: 110, electricite: 120, plomb: 90 },
-              '3 pièces': { erp: 120, amiante: 150, termites: 100, metrage: 80, dpe: 200, gaz: 130, electricite: 140, plomb: 110 },
-              '4 pièces': { erp: 140, amiante: 170, termites: 120, metrage: 90, dpe: 220, gaz: 150, electricite: 160, plomb: 130 },
-              '5 pièces': { erp: 160, amiante: 190, termites: 140, metrage: 100, dpe: 240, gaz: 170, electricite: 180, plomb: 150 }
+              '1 pièce' : { erp: 35, amiante: 75, termites: 75, metrage: 85, dpe: 90, gaz: 85, electricite: 70, plomb: 90 },
+              '2 pièces': { erp: 35, amiante: 78.75, termites: 78.75, metrage: 89.25, dpe: 94.50, gaz: 89.25, electricite: 73.50, plomb: 94.50 },
+              '3 pièces': { erp: 35, amiante: 82.50, termites: 82.50, metrage: 93.50, dpe: 99, gaz: 93.50, electricite: 77, plomb: 99 },
+              '4 pièces': { erp: 35, amiante: 86.25, termites: 86.25, metrage: 97.75, dpe: 103.50, gaz: 97.75, electricite: 80.50, plomb: 103.50 },
+              '5 pièces': { erp: 35, amiante: 93.75, termites: 93.75, metrage: 106.25, dpe: 112.50, gaz: 106.25, electricite: 87.50, plomb: 112.50 },
+              '6 pièces': { erp: 35, amiante: 97.50, termites: 97.50, metrage: 110.50, dpe: 117.00, gaz: 110.50, electricite: 91.00, plomb: 117.00 },
+              '7 pièces': { erp: 35, amiante: 105.00, termites: 105.00, metrage: 119.00, dpe: 126.00, gaz: 119.00, electricite: 98.00, plomb: 126.00 }
             },
             commerce: {
-              'Petit commerce (<50m²)': { erp: 200, amiante: 250, termites: 150, metrage: 120, dpe: 300, gaz: 200, electricite: 220, plomb: 180 },
-              'Commerce moyen (50-200m²)': { erp: 300, amiante: 350, termites: 200, metrage: 180, dpe: 400, gaz: 280, electricite: 300, plomb: 250 },
-              'Grand commerce (>200m²)': { erp: 400, amiante: 450, termites: 250, metrage: 220, dpe: 500, gaz: 350, electricite: 380, plomb: 320 }
+              'Petit commerce (<50m²)': { erp: 35, amiante: 98, termites: 98, metrage: 115, dpe: 117 },
+              'Commerce moyen (50-200m²)': { erp: 35, amiante: 110, termites: 110, metrage: 125, dpe: 130 },
+              'Grand commerce (>200m²)': { erp: 35, amiante: 190, termites: 190, metrage: 160, dpe: 170 }
             },
             remises: {
-              2: 0.05,
-              3: 0.10,
-              4: 0.15,
-              5: 0.20,
-              6: 0.25,
-              7: 0.30,
-              8: 0.35
+              3: 0.07,
+              4: 0.13,
+              5: 0.28,
+              6: 0.32,
+              7: 0.34,
+              8: 0.40
             }
           });
 
@@ -72,14 +74,14 @@
 
           const bienTypes = {
             maison: ['2 pièces', '3 pièces', '4 pièces', '5 pièces', '6 pièces', '7 pièces'],
-            appartement: ['2 pièces', '3 pièces', '4 pièces', '5 pièces'],
+            appartement: ['1 pièce', '2 pièces', '3 pièces', '4 pièces', '5 pièces', '6 pièces', '7 pièces'],
             commerce: ['Petit commerce (<50m²)', 'Commerce moyen (50-200m²)', 'Grand commerce (>200m²)']
           };
 
           const products = {
             maison: ['erp', 'dpe', 'amiante', 'termites', 'gaz', 'electricite', 'plomb', 'metrage'],
-            appartement: ['erp', 'dpe', 'amiante', 'gaz', 'electricite', 'plomb', 'metrage'],
-            commerce: ['erp', 'dpe', 'amiante', 'termites', 'gaz', 'electricite', 'plomb', 'metrage']
+            appartement: ['erp', 'dpe', 'amiante', 'termites', 'gaz', 'electricite', 'plomb', 'metrage'],
+            commerce: ['erp', 'dpe', 'amiante', 'termites', 'metrage']
           };
 
           const productLabels = {
