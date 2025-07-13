@@ -1,7 +1,7 @@
 {
-  "name": "Activ'Expertise Mobile",
-  "short_name": "Activ'Expertise",
-  "description": "Calculateur de prix diagnostics immobiliers",
+  "name": "Devis Tarifs",
+  "short_name": "DevisTarifs",
+  "description": "Calculateur de devis et tarifs professionnels",
   "start_url": "/activ-expertise-app/",
   "scope": "/activ-expertise-app/",
   "display": "standalone",
