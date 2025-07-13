@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activ'Expertise Mobile</title>
+    
+    <!-- PWA Configuration -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1e40af">
+    <meta name="background-color" content="#0f172a">
+    
+    <!-- Apple specific -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Activ'Expertise">
+    
+    <!-- Icons -->
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+    
+    <!-- React and styling -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        /* Masquer la barre d'adresse sur mobile */
+        @media (display-mode: standalone) {
+            body {
+                padding-top: env(safe-area-inset-top);
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+        }
+        
+        /* Optimisations mobile */
+        * {
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+        
+        body {
+            overscroll-behavior: none;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        /* Animation pour les boutons */
+        .btn-mobile {
+            transition: all 0.2s ease;
+        }
+        
+        .btn-mobile:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        // Icônes optimisées pour mobile
+        const Home = ({ size = 20 }) => <span style={{fontSize: size}}>🏠</span>;
+        const Building = ({ size = 20 }) => <span style={{fontSize: size}}>🏢</span>;
+        const Store = ({ size = 20 }) => <span style={{fontSize: size}}>🏪</span>;
+        const Calculator = ({ size = 20 }) => <span style={{fontSize: size}}>🌐</span>;
+        const Settings = ({ size = 20 }) => <span style={{fontSize: size}}>⚙️</span>;
+        const CheckCircle = ({ size = 16 }) => <span style={{fontSize: size}}>✅</span>;
+        const ArrowLeft = ({ size = 20 }) => <span style={{fontSize: size}}>←</span>;
+        const Key = ({ size = 20 }) => <span style={{fontSize: size}}>🔑</span>;
+        const Save = ({ size = 16 }) => <span style={{fontSize: size}}>💾</span>;
+        const Edit3 = ({ size = 16 }) => <span style={{fontSize: size}}>✏️</span>;
+        const X = ({ size = 16 }) => <span style={{fontSize: size}}>❌</span>;
+
+        const MobileCalculatorApp = () => {
+          // Configuration des prix mise à jour selon votre fichier
+          const [priceConfig, setPriceConfig] = useState({
+            maison: {
+              '2 pièces': { erp: 35, amiante: 86.25, termites: 86.25, metrage: 97.75, dpe: 103.50, gaz: 97.75, electricite: 80.50, plomb: 103.50 },
+              '3 pièces': { erp: 35, amiante: 97.50, termites: 97.50, metrage: 110.50, dpe: 117, gaz: 110.50, electricite: 91, plomb: 117 },
+              '4 pièces': { erp: 35, amiante: 105, termites: 105, metrage: 119, dpe: 126, gaz: 119, electricite: 98, plomb: 126 },
+              '5 pièces': { erp: 35, amiante: 112.50, termites: 112.50, metrage: 127.50, dpe: 135, gaz: 127.50, electricite: 105, plomb: 135 },
+              '6 pièces': { erp: 35, amiante: 150, termites: 150, metrage: 170, dpe: 180, gaz: 170, electricite: 140, plomb: 180 },
+              '7 pièces': { erp: 35, amiante: 187.50, termites: 187.50, metrage: 212.50, dpe: 225, gaz: 212.50, electricite: 175, plomb: 225 }
+            },
+            appartement: {
+              '1 pièce': { erp: 35, amiante: 75, termites: 75, metrage: 85, dpe: 90, gaz: 85, electricite: 70, plomb: 90 },
+              '2 pièces': { erp: 35, amiante: 78.75, termites: 78.75, metrage: 89.25, dpe: 94.50, gaz: 89.25, electricite: 73.50, plomb: 94.50 },
+              '3 pièces': { erp: 35, amiante: 82.50, termites: 82.50, metrage: 93.50, dpe: 99, gaz: 93.50, electricite: 77, plomb: 99 },
+              '4 pièces': { erp: 35, amiante: 86.25, termites: 86.25, metrage: 97.75, dpe: 103.50, gaz: 97.75, electricite: 80.50, plomb: 103.50 },
+              '5 pièces': { erp: 35, amiante: 93.75, termites: 93.75, metrage: 106.25, dpe: 112.50, gaz: 106.25, electricite: 87.50, plomb: 112.50 },
+              '6 pièces': { erp: 35, amiante: 97.50, termites: 97.50, metrage: 110.50, dpe: 117.00, gaz: 110.50, electricite: 91.00, plomb: 117.00 },
+              '7 pièces': { erp: 35, amiante: 105.00, termites: 105.00, metrage: 119.00, dpe: 126.00, gaz: 119.00, electricite: 98.00, plomb: 126.00 }
+            },
+            commerce: {
+              'Petit commerce (<50m²)': { erp: 35, amiante: 98, termites: 98, metrage: 115, dpe: 117 },
+              'Commerce moyen (50-200m²)': { erp: 35, amiante: 110, termites: 110, metrage: 125, dpe: 130 },
+              'Grand commerce (>200m²)': { erp: 35, amiante: 190, termites: 190, metrage: 160, dpe: 170 }
+            },
+            remises: {
+              3: 0.07,
+              4: 0.13,
+              5: 0.28,
+              6: 0.32,
+              7: 0.34,
+              8: 0.40
+            }
+          });
+
+          const [companyName, setCompanyName] = useState('Activ\'Expertise');
+          const [selectedBien, setSelectedBien] = useState('maison');
+          const [selectedType, setSelectedType] = useState('2 pièces');
+          const [selectedProducts, setSelectedProducts] = useState([]);
+          const [currentView, setCurrentView] = useState('calculator');
+          const [editingPrices, setEditingPrices] = useState(false);
+          const [tempPriceConfig, setTempPriceConfig] = useState(null);
+          const [isAuthenticated, setIsAuthenticated] = useState(false);
+          const [authAttempt, setAuthAttempt] = useState('');
+          const [adminPassword, setAdminPassword] = useState('admin123');
+
+          const bienTypes = {
+            maison: ['2 pièces', '3 pièces', '4 pièces', '5 pièces', '6 pièces', '7 pièces'],
+            appartement: ['1 pièce', '2 pièces', '3 pièces', '4 pièces', '5 pièces', '6 pièces', '7 pièces'],
+            commerce: ['Petit commerce (<50m²)', 'Commerce moyen (50-200m²)', 'Grand commerce (>200m²)']
+          };
+
+          const products = {
+            maison: ['erp', 'dpe', 'amiante', 'termites', 'gaz', 'electricite', 'plomb', 'metrage'],
+            appartement: ['erp', 'dpe', 'amiante', 'termites', 'gaz', 'electricite', 'plomb', 'metrage'],
+            commerce: ['erp', 'dpe', 'amiante', 'termites', 'metrage']
+          };
+
+          const productLabels = {
+            erp: 'ERP',
+            amiante: 'Amiante',
+            termites: 'Termites',
+            metrage: 'Métrage Loi Carrez',
+            dpe: 'DPE',
+            gaz: 'Gaz',
+            electricite: 'Électricité',
+            plomb: 'Plomb'
+          };
+
+          // Chargement depuis localStorage mobile
+          useEffect(() => {
+            try {
+              const savedConfig = localStorage.getItem('activexpertise_mobile_config');
+              if (savedConfig) {
+                const config = JSON.parse(savedConfig);
+                setPriceConfig(config.prices || priceConfig);
+                setCompanyName(config.company || companyName);
+                setAdminPassword(config.password || adminPassword);
+              }
+            } catch (error) {
+              console.log('Erreur chargement config mobile:', error);
+            }
+          }, []);
+
+          const saveConfiguration = () => {
+            try {
+              const config = {
+                prices: priceConfig,
+                company: companyName,
+                password: adminPassword
+              };
+              localStorage.setItem('activexpertise_mobile_config', JSON.stringify(config));
+              alert('Configuration sauvegardée !');
+            } catch (error) {
+              alert('Erreur lors de la sauvegarde');
+            }
+          };
+
+          const prices = priceConfig[selectedBien][selectedType];
+          const subtotal = selectedProducts.reduce((sum, product) => sum + prices[product], 0);
+          const discount = priceConfig.remises[selectedProducts.length] || 0;
+          const total = subtotal * (1 - discount);
+
+          const handleBienSelect = (bien) => {
+            setSelectedBien(bien);
+            setSelectedType(bienTypes[bien][0]);
+            setSelectedProducts([]);
+          };
+
+          const handleTypeSelect = (type) => {
+            setSelectedType(type);
+            setSelectedProducts([]);
+          };
+
+          const handleProductSelect = (product) => {
+            if (selectedProducts.includes(product)) {
+              setSelectedProducts(selectedProducts.filter(p => p !== product));
+            } else {
+              setSelectedProducts([...selectedProducts, product]);
+            }
+          };
+
+          const startEditingPrices = () => {
+            setTempPriceConfig({ ...priceConfig });
+            setEditingPrices(true);
+          };
+
+          const saveEditingPrices = () => {
+            setPriceConfig(tempPriceConfig);
+            setEditingPrices(false);
+            setTempPriceConfig(null);
+          };
+
+          const cancelEditingPrices = () => {
+            setEditingPrices(false);
+            setTempPriceConfig(null);
+          };
+
+          const updatePrice = (bien, type, product, newPrice) => {
+            const updated = { ...tempPriceConfig };
+            updated[bien][type][product] = parseFloat(newPrice) || 0;
+            setTempPriceConfig(updated);
+          };
+
+          const updateDiscount = (productCount, newDiscount) => {
+            const updated = { ...tempPriceConfig };
+            updated.remises[productCount] = parseFloat(newDiscount) / 100 || 0;
+            setTempPriceConfig(updated);
+          };
+
+          if (currentView === 'auth') {
+            return (
+              <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center p-4">
+                <div className="bg-slate-800/90 backdrop-blur-sm border border-slate-700 rounded-2xl p-6 w-full max-w-sm">
+                  <div className="text-center mb-6">
+                    <div className="flex items-center justify-center mb-4">
+                      <div className="bg-blue-600 p-3 rounded-full mr-3">
+                        <Key size={24} />
+                      </div>
+                      <h1 className="text-xl font-bold text-white">{companyName}</h1>
+                    </div>
+                    <p className="text-slate-300 text-sm">Accès administrateur</p>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <input
+                      type="password"
+                      placeholder="Mot de passe"
+                      value={authAttempt}
+                      onChange={(e) => setAuthAttempt(e.target.value)}
+                      className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 text-base"
+                    />
+                    
+                    <div className="flex gap-3">
+                      <button
+                        onClick={() => {
+                          if (authAttempt === adminPassword) {
+                            setIsAuthenticated(true);
+                            setCurrentView('admin');
+                            setAuthAttempt('');
+                          } else {
+                            alert('Mot de passe incorrect');
+                            setAuthAttempt('');
+                          }
+                        }}
+                        className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg transition-colors font-medium btn-mobile"
+                      >
+                        Connexion
+                      </button>
+                      <button
+                        onClick={() => setCurrentView('calculator')}
+                        className="px-4 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors btn-mobile"
+                      >
+                        <ArrowLeft size={20} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          }
+
+          if (currentView === 'admin') {
+            return (
+              <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+                <div className="p-4">
+                  {/* Header Admin Mobile */}
+                  <div className="bg-slate-800/90 backdrop-blur-sm border border-slate-700 rounded-2xl p-4 mb-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <div className="bg-blue-600 p-2 rounded-full mr-3">
+                          <Settings size={20} />
+                        </div>
+                        <div>
+                          <h1 className="text-lg font-bold text-white">Administration</h1>
+                          <p className="text-blue-100 text-xs">Configuration mobile</p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => {
+                          setCurrentView('calculator');
+                          setIsAuthenticated(false);
+                        }}
+                        className="bg-white/20 hover:bg-white/30 text-white p-2 rounded-full transition-colors btn-mobile"
+                      >
+                        <ArrowLeft size={18} />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Paramètres généraux */}
+                  <div className="bg-slate-800/90 backdrop-blur-sm border border-slate-700 rounded-2xl p-4 mb-4">
+                    <h3 className="text-lg font-semibold text-white mb-3">Paramètres</h3>
+                    <div className="space-y-3">
+                      <div>
+                        <label className="block text-slate-300 text-sm mb-1">Nom de l'entreprise</label>
+                        <input
+                          type="text"
+                          value={companyName}
+                          onChange={(e) => setCompanyName(e.target.value)}
+                          className="w-full px-3 py-2 bg-slate-600/50 border border-slate-500 rounded text-white text-base"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-slate-300 text-sm mb-1">Mot de passe admin</label>
+                        <input
+                          type="password"
+                          value={adminPassword}
+                          onChange={(e) => setAdminPassword(e.target.value)}
+                          className="w-full px-3 py-2 bg-slate-600/50 border border-slate-500 rounded text-white text-base"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Configuration des prix */}
+                  <div className="bg-slate-800/90 backdrop-blur-sm border border-slate-700 rounded-2xl p-4 mb-4">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-lg font-semibold text-white">Prix</h3>
+                      <div className="flex gap-2">
+                        {!editingPrices ? (
+                          <button
+                            onClick={startEditingPrices}
+                            className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg flex items-center gap-1 text-sm btn-mobile"
+                          >
+                            <Edit3 size={14} />
+                            Modifier
+                          </button>
+                        ) : (
+                          <>
+                            <button
+                              onClick={saveEditingPrices}
+                              className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg flex items-center gap-1 text-sm btn-mobile"
+                            >
+                              <Save size={14} />
+                              OK
+                            </button>
+                            <button
+                              onClick={cancelEditingPrices}
+                              className="bg-gray-600 hover:bg-gray-700 text-white px-3 py-2 rounded-lg flex items-center gap-1 text-sm btn-mobile"
+                            >
+                              <X size={14} />
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Édition des prix simplifiée pour mobile */}
+                    {editingPrices && (
+                      <div className="space-y-4 max-h-80 overflow-y-auto">
+                        {Object.entries(tempPriceConfig).map(([bienType, types]) => {
+                          if (bienType === 'remises') return (
+                            <div key="remises" className="border border-slate-600 rounded-lg p-3">
+                              <h5 className="font-medium text-slate-300 mb-2">Remises (%)</h5>
+                              <div className="grid grid-cols-3 gap-2">
+                                {Object.entries(types).map(([count, discount]) => (
+                                  <div key={count}>
+                                    <label className="text-slate-400 text-xs">{count} diag.</label>
+                                    <input
+                                      type="number"
+                                      step="1"
+                                      min="0"
+                                      max="100"
+                                      value={Math.round(discount * 100)}
+                                      onChange={(e) => updateDiscount(count, e.target.value)}
+                                      className="w-full px-2 py-1 text-sm bg-slate-600/50 border border-slate-500 rounded text-white"
+                                    />
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          );
+                          
+                          return (
+                            <div key={bienType} className="border border-slate-600 rounded-lg p-3">
+                              <h4 className="font-semibold text-white mb-2 capitalize">{bienType}</h4>
+                              <div className="space-y-3">
+                                {Object.entries(types).map(([typeSize, prices]) => (
+                                  <div key={typeSize}>
+                                    <h5 className="font-medium text-slate-300 text-sm mb-2">{typeSize}</h5>
+                                    <div className="grid grid-cols-2 gap-2">
+                                      {Object.entries(prices).map(([product, price]) => (
+                                        <div key={product}>
+                                          <label className="text-slate-400 text-xs">{productLabels[product]}</label>
+                                          <input
+                                            type="number"
+                                            step="0.25"
+                                            value={price}
+                                            onChange={(e) => updatePrice(bienType, typeSize, product, e.target.value)}
+                                            className="w-full px-2 py-1 text-sm bg-slate-600/50 border border-slate-500 rounded text-white"
+                                          />
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Bouton de sauvegarde */}
+                  <div className="text-center">
+                    <button
+                      onClick={saveConfiguration}
+                      className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg flex items-center gap-2 mx-auto font-medium btn-mobile"
+                    >
+                      <Save size={18} />
+                      Sauvegarder
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          }
+
+          return (
+            <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+              <div className="p-4 pb-20">
+                {/* Header mobile */}
+                <div className="bg-slate-800/90 backdrop-blur-sm border border-slate-700 rounded-2xl p-4 mb-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <div className="bg-blue-600 p-2 rounded-full mr-3">
+                        <Calculator size={20} />
+                      </div>
+                      <div>
+                        <h1 className="text-lg font-bold text-white">{companyName}</h1>
+                        <p className="text-blue-100 text-xs">Calculateur mobile</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setCurrentView('auth')}
+                      className="bg-white/20 hover:bg-white/30 text-white p-2 rounded-full transition-colors btn-mobile"
+                    >
+                      <Settings size={18} />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Type de bien */}
+                <div className="bg-slate-800/90 backdrop-blur-sm border border-slate-700 rounded-2xl p-4 mb-4">
+                  <h3 className="text-lg font-semibold text-white mb-3">Type de bien</h3>
+                  <div className="grid grid-cols-3 gap-2">
+                    {Object.keys(bienTypes).map(bien => (
+                      <button
+                        key={bien}
+                        onClick={() => handleBienSelect(bien)}
+                        className={`${selectedBien === bien ? 'bg-blue-600' : 'bg-slate-700/50'} 
+                          hover:bg-blue-500 text-white p-3 rounded-lg transition-colors flex flex-col items-center gap-1 btn-mobile`}
+                      >
+                        {bien === 'maison' && <Home size={20} />}
+                        {bien === 'appartement' && <Building size={20} />}
+                        {bien === 'commerce' && <Store size={20} />}
+                        <span className="text-xs font-medium capitalize">{bien}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Taille */}
+                <div className="bg-slate-800/90 backdrop-blur-sm border border-slate-700 rounded-2xl p-4 mb-4">
+                  <h3 className="text-lg font-semibold text-white mb-3">Taille</h3>
+                  <div className="grid grid-cols-2 gap-2">
+                    {bienTypes[selectedBien].map(type => (
+                      <button
+                        key={type}
+                        onClick={() => handleTypeSelect(type)}
+                        className={`${selectedType === type ? 'bg-blue-600' : 'bg-slate-700/50'} 
+                          hover:bg-blue-500 text-white p-3 rounded-lg transition-colors text-sm btn-mobile`}
+                      >
+                        {type}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Diagnostics */}
+                <div className="bg-slate-800/90 backdrop-blur-sm border border-slate-700 rounded-2xl p-4 mb-4">
+                  <h3 className="text-lg font-semibold text-white mb-3">Diagnostics</h3>
+                  <div className="grid grid-cols-2 gap-2">
+                    {products[selectedBien].map(product => (
+                      <button
+                        key={product}
+                        onClick={() => handleProductSelect(product)}
+                        className={`${selectedProducts.includes(product) ? 'bg-blue-600' : 'bg-slate-700/50'} 
+                          hover:bg-blue-500 text-white p-3 rounded-lg transition-colors flex items-center justify-between text-sm btn-mobile`}
+                      >
+                        <span>{productLabels[product]}</span>
+                        {selectedProducts.includes(product) && <CheckCircle size={14} />}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Devis */}
+                {selectedProducts.length > 0 && (
+                  <div className="bg-slate-800/90 backdrop-blur-sm border border-slate-700 rounded-2xl p-4">
+                    <h3 className="text-lg font-semibold text-white mb-3">Devis</h3>
+                    
+                    <div className="space-y-2 mb-4">
+                      {selectedProducts.map(product => (
+                        <div key={product} className="flex justify-between items-center py-1 text-sm">
+                          <span className="text-slate-300">{productLabels[product]}</span>
+                          <span className="font-semibold text-white">{priceConfig[selectedBien][selectedType][product]}€</span>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <div className="border-t border-slate-600 pt-3">
+                      <div className="flex justify-between items-center text-sm mb-2">
+                        <span className="text-slate-300">Sous-total</span>
+                        <span className="font-semibold text-white">{subtotal}€</span>
+                      </div>
+                      
+                      {selectedProducts.length >= 3 && (
+                        <div className="flex justify-between items-center text-green-400 text-sm mb-2">
+                          <span>Remise ({selectedProducts.length} diag.) -{Math.round(discount * 100)}%</span>
+                          <span className="font-semibold">-{Math.round(subtotal * discount)}€</span>
+                        </div>
+                      )}
+                      
+                      <div className="flex justify-between items-center text-xl font-bold text-white pt-2 border-t border-slate-600">
+                        <span>Total</span>
+                        <span className="text-blue-400">{Math.round(total)}€</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        };
+
+        // Rendu
+        const { useState, useEffect } = React;
+        ReactDOM.render(<MobileCalculatorApp />, document.getElementById('root'));
+
+        // Service Worker pour PWA
+        if ('serviceWorker' in navigator) {
+          window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+              .then((registration) => console.log('SW registered'))
+              .catch((registrationError) => console.log('SW registration failed'));
+          });
+        }
+    </script>
+</body>
+</html>
