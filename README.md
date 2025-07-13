@@ -24,7 +24,7 @@ Conçue pour les professionnels du diagnostic immobilier.
 
 ### Système de tarification
 - Tarifs personnalisables par type de bien
-- Remises automatiques selon le nombre de diagnostics (5% à 35%)
+- Remises automatiques selon le nombre de diagnostics
 - Calcul en temps réel du devis
 
 ### Administration
