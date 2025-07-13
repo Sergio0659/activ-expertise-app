@@ -1,10 +1,10 @@
 const CACHE_NAME = 'activ-expertise-v1';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/icon-192.png',
-  '/icon-512.png'
+  '/activ-expertise-app/',
+  '/activ-expertise-app/index.html',
+  '/activ-expertise-app/manifest.json',
+  '/activ-expertise-app/icon-192.png',
+  '/activ-expertise-app/icon-512.png'
 ];
 
 self.addEventListener('install', (event) => {

@@ -2,20 +2,21 @@
   "name": "Activ'Expertise Mobile",
   "short_name": "Activ'Expertise",
   "description": "Calculateur de prix diagnostics immobiliers",
-  "start_url": "/",
+  "start_url": "/activ-expertise-app/",
+  "scope": "/activ-expertise-app/",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#1e40af",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "/activ-expertise-app/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "icon-512.png",
+      "src": "/activ-expertise-app/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
@@ -27,8 +28,11 @@
       "name": "Nouveau devis",
       "short_name": "Devis",
       "description": "Créer un nouveau devis",
-      "url": "/",
-      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+      "url": "/activ-expertise-app/",
+      "icons": [{ 
+        "src": "/activ-expertise-app/icon-192.png", 
+        "sizes": "192x192" 
+      }]
     }
   ]
 }
