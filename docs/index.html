@@ -60,22 +60,151 @@
     <div id="root"></div>
     
     <script type="text/babel">
-        // Icônes optimisées pour mobile
-        const Home = ({ size = 20 }) => <span style={{fontSize: size}}>🏠</span>;
-        const Building = ({ size = 20 }) => <span style={{fontSize: size}}>🏢</span>;
-        const Store = ({ size = 20 }) => <span style={{fontSize: size}}>🏪</span>;
-        const Calculator = ({ size = 20 }) => <span style={{fontSize: size}}>🌐</span>;
-        const Settings = ({ size = 20 }) => <span style={{fontSize: size}}>⚙️</span>;
-        const CheckCircle = ({ size = 16 }) => <span style={{fontSize: size}}>✅</span>;
-        const ArrowLeft = ({ size = 20 }) => <span style={{fontSize: size}}>←</span>;
-        const Key = ({ size = 20 }) => <span style={{fontSize: size}}>🔑</span>;
-        const Save = ({ size = 16 }) => <span style={{fontSize: size}}>💾</span>;
-        const Edit3 = ({ size = 16 }) => <span style={{fontSize: size}}>✏️</span>;
-        const X = ({ size = 16 }) => <span style={{fontSize: size}}>❌</span>;
+        const { useState } = React;
 
-        const MobileCalculatorApp = () => {
-          // Configuration des prix mise à jour selon votre fichier
-          const [priceConfig, setPriceConfig] = useState({
+        // Icônes
+        const Home = ({ size = 20, className }) => (
+            <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9,22 9,12 15,12 15,22"/>
+            </svg>
+        );
+        
+        const Building = ({ size = 20, className }) => (
+            <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect width="16" height="20" x="4" y="2" rx="2" ry="2"/>
+                <path d="M9 22v-4h6v4"/>
+                <path d="M8 6h.01"/>
+                <path d="M16 6h.01"/>
+                <path d="M12 6h.01"/>
+                <path d="M12 10h.01"/>
+                <path d="M12 14h.01"/>
+                <path d="M16 10h.01"/>
+                <path d="M16 14h.01"/>
+                <path d="M8 10h.01"/>
+                <path d="M8 14h.01"/>
+            </svg>
+        );
+        
+        const Store = ({ size = 20, className }) => (
+            <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/>
+                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                <path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/>
+                <path d="M2 7h20"/>
+                <path d="M22 7v3a2 2 0 0 1-2 2v0a2 2 0 0 1-2-2V7"/>
+                <path d="M18 7v3a2 2 0 0 1-2 2v0a2 2 0 0 1-2-2V7"/>
+                <path d="M14 7v3a2 2 0 0 1-2 2v0a2 2 0 0 1-2-2V7"/>
+                <path d="M10 7v3a2 2 0 0 1-2 2v0a2 2 0 0 1-2-2V7"/>
+                <path d="M6 7v3a2 2 0 0 1-2 2v0a2 2 0 0 1-2-2V7"/>
+            </svg>
+        );
+        
+        const ArrowLeft = ({ size = 20, className }) => (
+            <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="m12 19-7-7 7-7"/>
+                <path d="M19 12H5"/>
+            </svg>
+        );
+        
+        const User = ({ size = 20, className }) => (
+            <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+            </svg>
+        );
+        
+        const Calculator = ({ size = 20, className }) => (
+            <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect width="16" height="20" x="4" y="2" rx="2"/>
+                <line x1="8" x2="16" y1="6" y2="6"/>
+                <line x1="16" x2="16" y1="14" y2="18"/>
+                <path d="M16 10h.01"/>
+                <path d="M12 10h.01"/>
+                <path d="M8 10h.01"/>
+                <path d="M12 14h.01"/>
+                <path d="M8 14h.01"/>
+                <path d="M8 18h.01"/>
+                <path d="M12 18h.01"/>
+            </svg>
+        );
+        
+        const Award = ({ size = 20, className }) => (
+            <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="8" r="6"/>
+                <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+            </svg>
+        );
+        
+        // Icônes pour diagnostics
+        const Thermometer = ({ size = 20, className }) => (
+            <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/>
+            </svg>
+        );
+        
+        const Shield = ({ size = 20, className }) => (
+            <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/>
+            </svg>
+        );
+        
+        const Droplets = ({ size = 20, className }) => (
+            <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/>
+                <path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2.04 4.6 4.14 6.18s3.85 2.67 3.85 4.03a6.06 6.06 0 0 1-6 6.06c-3.71 0-6.72-3.35-6.72-7.54"/>
+            </svg>
+        );
+        
+        const Bug = ({ size = 20, className }) => (
+            <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect width="8" height="14" x="8" y="6" rx="4"/>
+                <path d="m19 7-3 2"/>
+                <path d="m5 7 3 2"/>
+                <path d="m19 19-3-2"/>
+                <path d="m5 19 3-2"/>
+                <path d="M20 12h-4"/>
+                <path d="M4 12h4"/>
+                <path d="m9 2 3 3 3-3"/>
+            </svg>
+        );
+        
+        const Wind = ({ size = 20, className }) => (
+            <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/>
+                <path d="M9.6 4.6A2 2 0 1 1 11 8H2"/>
+                <path d="M12.6 19.4A2 2 0 1 0 14 16H2"/>
+            </svg>
+        );
+        
+        const Zap = ({ size = 20, className }) => (
+            <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/>
+            </svg>
+        );
+        
+        const Eye = ({ size = 20, className }) => (
+            <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+                <circle cx="12" cy="12" r="3"/>
+            </svg>
+        );
+        
+        const Wrench = ({ size = 20, className }) => (
+            <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+            </svg>
+        );
+
+        const DiagnosticApp = () => {
+          const [currentStep, setCurrentStep] = useState('home');
+          const [selectedType, setSelectedType] = useState('');
+          const [selectedSize, setSelectedSize] = useState('');
+          const [selectedDiagnostics, setSelectedDiagnostics] = useState([]);
+          const [showAdminLogin, setShowAdminLogin] = useState(false);
+
+          // Configuration des prix selon votre fichier
+          const priceConfig = {
             maison: {
               '2 pièces': { erp: 35, amiante: 86.25, termites: 86.25, metrage: 97.75, dpe: 103.50, gaz: 97.75, electricite: 80.50, plomb: 103.50 },
               '3 pièces': { erp: 35, amiante: 97.50, termites: 97.50, metrage: 110.50, dpe: 117, gaz: 110.50, electricite: 91, plomb: 117 },
@@ -106,444 +235,364 @@
               7: 0.34,
               8: 0.40
             }
-          });
+          };
 
-          const [companyName, setCompanyName] = useState('Activ\'Expertise');
-          const [selectedBien, setSelectedBien] = useState('maison');
-          const [selectedType, setSelectedType] = useState('2 pièces');
-          const [selectedProducts, setSelectedProducts] = useState([]);
-          const [currentView, setCurrentView] = useState('calculator');
-          const [editingPrices, setEditingPrices] = useState(false);
-          const [tempPriceConfig, setTempPriceConfig] = useState(null);
-          const [isAuthenticated, setIsAuthenticated] = useState(false);
-          const [authAttempt, setAuthAttempt] = useState('');
-          const [adminPassword, setAdminPassword] = useState('admin123');
+          const diagnostics = [
+            { id: 'dpe', name: 'DPE', icon: Thermometer, color: 'bg-green-500' },
+            { id: 'amiante', name: 'Amiante', icon: Shield, color: 'bg-red-500' },
+            { id: 'plomb', name: 'Plomb', icon: Droplets, color: 'bg-blue-500' },
+            { id: 'termites', name: 'Termites', icon: Bug, color: 'bg-yellow-500' },
+            { id: 'gaz', name: 'Gaz', icon: Wind, color: 'bg-orange-500' },
+            { id: 'electricite', name: 'Électricité', icon: Zap, color: 'bg-purple-500' },
+            { id: 'erp', name: 'ERP', icon: Eye, color: 'bg-indigo-500' },
+            { id: 'metrage', name: 'Loi Carrez', icon: Wrench, color: 'bg-teal-500' }
+          ];
 
-          const bienTypes = {
+          const propertyTypes = [
+            { id: 'maison', name: 'Maison', icon: Home, gradient: 'from-blue-600 to-blue-800' },
+            { id: 'appartement', name: 'Appartement', icon: Building, gradient: 'from-green-600 to-green-800' },
+            { id: 'commerce', name: 'Commerce', icon: Store, gradient: 'from-purple-600 to-purple-800' }
+          ];
+
+          const sizes = {
             maison: ['2 pièces', '3 pièces', '4 pièces', '5 pièces', '6 pièces', '7 pièces'],
             appartement: ['1 pièce', '2 pièces', '3 pièces', '4 pièces', '5 pièces', '6 pièces', '7 pièces'],
             commerce: ['Petit commerce (<50m²)', 'Commerce moyen (50-200m²)', 'Grand commerce (>200m²)']
           };
 
-          const products = {
+          // Diagnostics disponibles par type de bien
+          const availableDiagnostics = {
             maison: ['erp', 'dpe', 'amiante', 'termites', 'gaz', 'electricite', 'plomb', 'metrage'],
             appartement: ['erp', 'dpe', 'amiante', 'termites', 'gaz', 'electricite', 'plomb', 'metrage'],
             commerce: ['erp', 'dpe', 'amiante', 'termites', 'metrage']
           };
 
-          const productLabels = {
-            erp: 'ERP',
-            amiante: 'Amiante',
-            termites: 'Termites',
-            metrage: 'Métrage Loi Carrez',
-            dpe: 'DPE',
-            gaz: 'Gaz',
-            electricite: 'Électricité',
-            plomb: 'Plomb'
+          const handleDiagnosticToggle = (diagnosticId) => {
+            setSelectedDiagnostics(prev => 
+              prev.includes(diagnosticId) 
+                ? prev.filter(id => id !== diagnosticId)
+                : [...prev, diagnosticId]
+            );
           };
 
-          // Chargement depuis localStorage mobile
-          useEffect(() => {
-            try {
-              const savedConfig = localStorage.getItem('activexpertise_mobile_config');
-              if (savedConfig) {
-                const config = JSON.parse(savedConfig);
-                setPriceConfig(config.prices || priceConfig);
-                setCompanyName(config.company || companyName);
-                setAdminPassword(config.password || adminPassword);
-              }
-            } catch (error) {
-              console.log('Erreur chargement config mobile:', error);
-            }
-          }, []);
-
-          const saveConfiguration = () => {
-            try {
-              const config = {
-                prices: priceConfig,
-                company: companyName,
-                password: adminPassword
-              };
-              localStorage.setItem('activexpertise_mobile_config', JSON.stringify(config));
-              alert('Configuration sauvegardée !');
-            } catch (error) {
-              alert('Erreur lors de la sauvegarde');
-            }
+          const calculatePricing = () => {
+            const prices = priceConfig[selectedType]?.[selectedSize] || {};
+            const subtotal = selectedDiagnostics.reduce((total, diagnosticId) => {
+              return total + (prices[diagnosticId] || 0);
+            }, 0);
+            
+            const discount = priceConfig.remises[selectedDiagnostics.length] || 0;
+            const discountAmount = subtotal * discount;
+            const total = subtotal - discountAmount;
+            
+            return { subtotal, discount, discountAmount, total };
           };
 
-          const prices = priceConfig[selectedBien][selectedType];
-          const subtotal = selectedProducts.reduce((sum, product) => sum + prices[product], 0);
-          const discount = priceConfig.remises[selectedProducts.length] || 0;
-          const total = subtotal * (1 - discount);
-
-          const handleBienSelect = (bien) => {
-            setSelectedBien(bien);
-            setSelectedType(bienTypes[bien][0]);
-            setSelectedProducts([]);
+          const resetApp = () => {
+            setCurrentStep('home');
+            setSelectedType('');
+            setSelectedSize('');
+            setSelectedDiagnostics([]);
+            setShowAdminLogin(false);
           };
 
-          const handleTypeSelect = (type) => {
-            setSelectedType(type);
-            setSelectedProducts([]);
-          };
-
-          const handleProductSelect = (product) => {
-            if (selectedProducts.includes(product)) {
-              setSelectedProducts(selectedProducts.filter(p => p !== product));
-            } else {
-              setSelectedProducts([...selectedProducts, product]);
-            }
-          };
-
-          const startEditingPrices = () => {
-            setTempPriceConfig({ ...priceConfig });
-            setEditingPrices(true);
-          };
-
-          const saveEditingPrices = () => {
-            setPriceConfig(tempPriceConfig);
-            setEditingPrices(false);
-            setTempPriceConfig(null);
-          };
-
-          const cancelEditingPrices = () => {
-            setEditingPrices(false);
-            setTempPriceConfig(null);
-          };
-
-          const updatePrice = (bien, type, product, newPrice) => {
-            const updated = { ...tempPriceConfig };
-            updated[bien][type][product] = parseFloat(newPrice) || 0;
-            setTempPriceConfig(updated);
-          };
-
-          const updateDiscount = (productCount, newDiscount) => {
-            const updated = { ...tempPriceConfig };
-            updated.remises[productCount] = parseFloat(newDiscount) / 100 || 0;
-            setTempPriceConfig(updated);
-          };
-
-          if (currentView === 'auth') {
+          if (showAdminLogin) {
             return (
-              <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center p-4">
-                <div className="bg-slate-800/90 backdrop-blur-sm border border-slate-700 rounded-2xl p-6 w-full max-w-sm">
-                  <div className="text-center mb-6">
-                    <div className="flex items-center justify-center mb-4">
-                      <div className="bg-blue-600 p-3 rounded-full mr-3">
-                        <Key size={24} />
-                      </div>
-                      <h1 className="text-xl font-bold text-white">{companyName}</h1>
+              <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center p-4">
+                <div className="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-md">
+                  <div className="text-center mb-8">
+                    <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <User className="w-10 h-10 text-white" />
                     </div>
-                    <p className="text-slate-300 text-sm">Accès administrateur</p>
+                    <h2 className="text-2xl font-bold text-gray-800">Accès Administrateur</h2>
                   </div>
                   
                   <div className="space-y-4">
-                    <input
-                      type="password"
-                      placeholder="Mot de passe"
-                      value={authAttempt}
-                      onChange={(e) => setAuthAttempt(e.target.value)}
-                      className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 text-base"
-                    />
-                    
-                    <div className="flex gap-3">
-                      <button
-                        onClick={() => {
-                          if (authAttempt === adminPassword) {
-                            setIsAuthenticated(true);
-                            setCurrentView('admin');
-                            setAuthAttempt('');
-                          } else {
-                            alert('Mot de passe incorrect');
-                            setAuthAttempt('');
-                          }
-                        }}
-                        className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg transition-colors font-medium btn-mobile"
-                      >
-                        Connexion
-                      </button>
-                      <button
-                        onClick={() => setCurrentView('calculator')}
-                        className="px-4 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors btn-mobile"
-                      >
-                        <ArrowLeft size={20} />
-                      </button>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Identifiant</label>
+                      <input 
+                        type="text" 
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="Votre identifiant"
+                      />
                     </div>
-                  </div>
-                </div>
-              </div>
-            );
-          }
-
-          if (currentView === 'admin') {
-            return (
-              <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
-                <div className="p-4">
-                  {/* Header Admin Mobile */}
-                  <div className="bg-slate-800/90 backdrop-blur-sm border border-slate-700 rounded-2xl p-4 mb-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center">
-                        <div className="bg-blue-600 p-2 rounded-full mr-3">
-                          <Settings size={20} />
-                        </div>
-                        <div>
-                          <h1 className="text-lg font-bold text-white">Administration</h1>
-                          <p className="text-blue-100 text-xs">Configuration mobile</p>
-                        </div>
-                      </div>
-                      <button
-                        onClick={() => {
-                          setCurrentView('calculator');
-                          setIsAuthenticated(false);
-                        }}
-                        className="bg-white/20 hover:bg-white/30 text-white p-2 rounded-full transition-colors btn-mobile"
-                      >
-                        <ArrowLeft size={18} />
-                      </button>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Mot de passe</label>
+                      <input 
+                        type="password" 
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="Votre mot de passe"
+                      />
                     </div>
-                  </div>
-
-                  {/* Paramètres généraux */}
-                  <div className="bg-slate-800/90 backdrop-blur-sm border border-slate-700 rounded-2xl p-4 mb-4">
-                    <h3 className="text-lg font-semibold text-white mb-3">Paramètres</h3>
-                    <div className="space-y-3">
-                      <div>
-                        <label className="block text-slate-300 text-sm mb-1">Nom de l'entreprise</label>
-                        <input
-                          type="text"
-                          value={companyName}
-                          onChange={(e) => setCompanyName(e.target.value)}
-                          className="w-full px-3 py-2 bg-slate-600/50 border border-slate-500 rounded text-white text-base"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-slate-300 text-sm mb-1">Mot de passe admin</label>
-                        <input
-                          type="password"
-                          value={adminPassword}
-                          onChange={(e) => setAdminPassword(e.target.value)}
-                          className="w-full px-3 py-2 bg-slate-600/50 border border-slate-500 rounded text-white text-base"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Configuration des prix */}
-                  <div className="bg-slate-800/90 backdrop-blur-sm border border-slate-700 rounded-2xl p-4 mb-4">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-white">Prix</h3>
-                      <div className="flex gap-2">
-                        {!editingPrices ? (
-                          <button
-                            onClick={startEditingPrices}
-                            className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg flex items-center gap-1 text-sm btn-mobile"
-                          >
-                            <Edit3 size={14} />
-                            Modifier
-                          </button>
-                        ) : (
-                          <>
-                            <button
-                              onClick={saveEditingPrices}
-                              className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg flex items-center gap-1 text-sm btn-mobile"
-                            >
-                              <Save size={14} />
-                              OK
-                            </button>
-                            <button
-                              onClick={cancelEditingPrices}
-                              className="bg-gray-600 hover:bg-gray-700 text-white px-3 py-2 rounded-lg flex items-center gap-1 text-sm btn-mobile"
-                            >
-                              <X size={14} />
-                            </button>
-                          </>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Édition des prix simplifiée pour mobile */}
-                    {editingPrices && (
-                      <div className="space-y-4 max-h-80 overflow-y-auto">
-                        {Object.entries(tempPriceConfig).map(([bienType, types]) => {
-                          if (bienType === 'remises') return (
-                            <div key="remises" className="border border-slate-600 rounded-lg p-3">
-                              <h5 className="font-medium text-slate-300 mb-2">Remises (%)</h5>
-                              <div className="grid grid-cols-3 gap-2">
-                                {Object.entries(types).map(([count, discount]) => (
-                                  <div key={count}>
-                                    <label className="text-slate-400 text-xs">{count} diag.</label>
-                                    <input
-                                      type="number"
-                                      step="1"
-                                      min="0"
-                                      max="100"
-                                      value={Math.round(discount * 100)}
-                                      onChange={(e) => updateDiscount(count, e.target.value)}
-                                      className="w-full px-2 py-1 text-sm bg-slate-600/50 border border-slate-500 rounded text-white"
-                                    />
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          );
-                          
-                          return (
-                            <div key={bienType} className="border border-slate-600 rounded-lg p-3">
-                              <h4 className="font-semibold text-white mb-2 capitalize">{bienType}</h4>
-                              <div className="space-y-3">
-                                {Object.entries(types).map(([typeSize, prices]) => (
-                                  <div key={typeSize}>
-                                    <h5 className="font-medium text-slate-300 text-sm mb-2">{typeSize}</h5>
-                                    <div className="grid grid-cols-2 gap-2">
-                                      {Object.entries(prices).map(([product, price]) => (
-                                        <div key={product}>
-                                          <label className="text-slate-400 text-xs">{productLabels[product]}</label>
-                                          <input
-                                            type="number"
-                                            step="0.25"
-                                            value={price}
-                                            onChange={(e) => updatePrice(bienType, typeSize, product, e.target.value)}
-                                            className="w-full px-2 py-1 text-sm bg-slate-600/50 border border-slate-500 rounded text-white"
-                                          />
-                                        </div>
-                                      ))}
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Bouton de sauvegarde */}
-                  <div className="text-center">
-                    <button
-                      onClick={saveConfiguration}
-                      className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg flex items-center gap-2 mx-auto font-medium btn-mobile"
-                    >
-                      <Save size={18} />
-                      Sauvegarder
+                    <button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all btn-mobile">
+                      Se connecter
                     </button>
                   </div>
+                  
+                  <button 
+                    onClick={() => setShowAdminLogin(false)}
+                    className="w-full mt-4 text-gray-600 hover:text-gray-800 transition-colors"
+                  >
+                    Retour
+                  </button>
                 </div>
               </div>
             );
           }
 
           return (
-            <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
-              <div className="p-4 pb-20">
-                {/* Header mobile */}
-                <div className="bg-slate-800/90 backdrop-blur-sm border border-slate-700 rounded-2xl p-4 mb-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <div className="bg-blue-600 p-2 rounded-full mr-3">
-                        <Calculator size={20} />
-                      </div>
-                      <div>
-                        <h1 className="text-lg font-bold text-white">{companyName}</h1>
-                        <p className="text-blue-100 text-xs">Calculateur mobile</p>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => setCurrentView('auth')}
-                      className="bg-white/20 hover:bg-white/30 text-white p-2 rounded-full transition-colors btn-mobile"
+            <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+              {/* Header */}
+              <div className="bg-white/10 backdrop-blur-md border-b border-white/20">
+                <div className="px-6 py-4 flex items-center justify-between">
+                  {currentStep !== 'home' && (
+                    <button 
+                      onClick={() => {
+                        if (currentStep === 'size') {
+                          setCurrentStep('home');
+                          setSelectedType('');
+                        } else if (currentStep === 'diagnostics') {
+                          setCurrentStep('size');
+                          setSelectedDiagnostics([]);
+                        } else if (currentStep === 'devis') {
+                          setCurrentStep('diagnostics');
+                        }
+                      }}
+                      className="flex items-center space-x-2 text-white hover:text-blue-300 transition-colors btn-mobile"
                     >
-                      <Settings size={18} />
+                      <ArrowLeft className="w-5 h-5" />
+                      <span>Retour</span>
                     </button>
+                  )}
+                  
+                  <div className="flex-1 text-center">
+                    <h1 className="text-xl font-bold text-white">Activ'Expertise</h1>
                   </div>
+                  
+                  {currentStep === 'home' && (
+                    <button 
+                      onClick={() => setShowAdminLogin(true)}
+                      className="p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors btn-mobile"
+                    >
+                      <User className="w-5 h-5 text-white" />
+                    </button>
+                  )}
                 </div>
+              </div>
 
-                {/* Type de bien */}
-                <div className="bg-slate-800/90 backdrop-blur-sm border border-slate-700 rounded-2xl p-4 mb-4">
-                  <h3 className="text-lg font-semibold text-white mb-3">Type de bien</h3>
-                  <div className="grid grid-cols-3 gap-2">
-                    {Object.keys(bienTypes).map(bien => (
-                      <button
-                        key={bien}
-                        onClick={() => handleBienSelect(bien)}
-                        className={`${selectedBien === bien ? 'bg-blue-600' : 'bg-slate-700/50'} 
-                          hover:bg-blue-500 text-white p-3 rounded-lg transition-colors flex flex-col items-center gap-1 btn-mobile`}
-                      >
-                        {bien === 'maison' && <Home size={20} />}
-                        {bien === 'appartement' && <Building size={20} />}
-                        {bien === 'commerce' && <Store size={20} />}
-                        <span className="text-xs font-medium capitalize">{bien}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Taille */}
-                <div className="bg-slate-800/90 backdrop-blur-sm border border-slate-700 rounded-2xl p-4 mb-4">
-                  <h3 className="text-lg font-semibold text-white mb-3">Taille</h3>
-                  <div className="grid grid-cols-2 gap-2">
-                    {bienTypes[selectedBien].map(type => (
-                      <button
-                        key={type}
-                        onClick={() => handleTypeSelect(type)}
-                        className={`${selectedType === type ? 'bg-blue-600' : 'bg-slate-700/50'} 
-                          hover:bg-blue-500 text-white p-3 rounded-lg transition-colors text-sm btn-mobile`}
-                      >
-                        {type}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Diagnostics */}
-                <div className="bg-slate-800/90 backdrop-blur-sm border border-slate-700 rounded-2xl p-4 mb-4">
-                  <h3 className="text-lg font-semibold text-white mb-3">Diagnostics</h3>
-                  <div className="grid grid-cols-2 gap-2">
-                    {products[selectedBien].map(product => (
-                      <button
-                        key={product}
-                        onClick={() => handleProductSelect(product)}
-                        className={`${selectedProducts.includes(product) ? 'bg-blue-600' : 'bg-slate-700/50'} 
-                          hover:bg-blue-500 text-white p-3 rounded-lg transition-colors flex items-center justify-between text-sm btn-mobile`}
-                      >
-                        <span>{productLabels[product]}</span>
-                        {selectedProducts.includes(product) && <CheckCircle size={14} />}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Devis */}
-                {selectedProducts.length > 0 && (
-                  <div className="bg-slate-800/90 backdrop-blur-sm border border-slate-700 rounded-2xl p-4">
-                    <h3 className="text-lg font-semibold text-white mb-3">Devis</h3>
+              {/* Content */}
+              <div className="px-6 py-8">
+                {/* Step 1: Property Type Selection */}
+                {currentStep === 'home' && (
+                  <div className="space-y-8">
+                    <div className="text-center">
+                      <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <Award className="w-12 h-12 text-white" />
+                      </div>
+                      <h2 className="text-3xl font-bold text-white mb-3">Activ'Expertise</h2>
+                      <p className="text-gray-300 text-lg">Diagnostics immobiliers professionnels</p>
+                    </div>
                     
-                    <div className="space-y-2 mb-4">
-                      {selectedProducts.map(product => (
-                        <div key={product} className="flex justify-between items-center py-1 text-sm">
-                          <span className="text-slate-300">{productLabels[product]}</span>
-                          <span className="font-semibold text-white">{priceConfig[selectedBien][selectedType][product]}€</span>
-                        </div>
+                    <div className="space-y-4">
+                      <h3 className="text-xl font-semibold text-white text-center mb-6">Sélectionnez le type de bien</h3>
+                      
+                      {propertyTypes.map((type) => {
+                        const IconComponent = type.icon;
+                        return (
+                          <button
+                            key={type.id}
+                            onClick={() => {
+                              setSelectedType(type.id);
+                              setCurrentStep('size');
+                            }}
+                            className={`w-full p-6 rounded-2xl bg-gradient-to-r ${type.gradient} text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 btn-mobile`}
+                          >
+                            <div className="flex items-center space-x-4">
+                              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
+                                <IconComponent className="w-8 h-8" />
+                              </div>
+                              <div className="text-left">
+                                <h4 className="text-xl font-semibold">{type.name}</h4>
+                                <p className="text-white/80">Diagnostics adaptés</p>
+                              </div>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* Step 2: Size Selection */}
+                {currentStep === 'size' && (
+                  <div className="space-y-6">
+                    <div className="text-center">
+                      <h2 className="text-2xl font-bold text-white mb-2">
+                        {propertyTypes.find(t => t.id === selectedType)?.name}
+                      </h2>
+                      <p className="text-gray-300">Choisissez la taille du bien</p>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      {sizes[selectedType]?.map((size) => (
+                        <button
+                          key={size}
+                          onClick={() => {
+                            setSelectedSize(size);
+                            setCurrentStep('diagnostics');
+                          }}
+                          className="p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20 transition-all duration-300 transform hover:scale-105 btn-mobile"
+                        >
+                          <div className="text-center">
+                            <div className="text-lg font-semibold">{size}</div>
+                          </div>
+                        </button>
                       ))}
                     </div>
+                  </div>
+                )}
+
+                {/* Step 3: Diagnostics Selection */}
+                {currentStep === 'diagnostics' && (
+                  <div className="space-y-6">
+                    <div className="text-center">
+                      <h2 className="text-2xl font-bold text-white mb-2">Sélectionnez les diagnostics</h2>
+                      <p className="text-gray-300">
+                        {propertyTypes.find(t => t.id === selectedType)?.name} - {selectedSize}
+                      </p>
+                    </div>
                     
-                    <div className="border-t border-slate-600 pt-3">
-                      <div className="flex justify-between items-center text-sm mb-2">
-                        <span className="text-slate-300">Sous-total</span>
-                        <span className="font-semibold text-white">{subtotal}€</span>
+                    <div className="grid gap-3">
+                      {availableDiagnostics[selectedType]?.map((diagnosticId) => {
+                        const diagnostic = diagnostics.find(d => d.id === diagnosticId);
+                        if (!diagnostic) return null;
+                        
+                        const IconComponent = diagnostic.icon;
+                        const isSelected = selectedDiagnostics.includes(diagnosticId);
+                        const price = priceConfig[selectedType]?.[selectedSize]?.[diagnosticId] || 0;
+                        
+                        return (
+                          <button
+                            key={diagnosticId}
+                            onClick={() => handleDiagnosticToggle(diagnosticId)}
+                            className={`p-4 rounded-xl border-2 transition-all duration-300 btn-mobile ${
+                              isSelected 
+                                ? 'bg-white/20 border-white/40 backdrop-blur-md' 
+                                : 'bg-white/5 border-white/20 hover:bg-white/10'
+                            }`}
+                          >
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center space-x-3">
+                                <div className={`w-10 h-10 ${diagnostic.color} rounded-full flex items-center justify-center`}>
+                                  <IconComponent className="w-5 h-5 text-white" />
+                                </div>
+                                <span className="text-white font-medium">{diagnostic.name}</span>
+                              </div>
+                              <div className="text-right">
+                                <div className="text-white font-semibold">{price}€</div>
+                                <div className={`w-5 h-5 rounded-full border-2 ${
+                                  isSelected ? 'bg-green-500 border-green-500' : 'border-white/40'
+                                }`}>
+                                  {isSelected && (
+                                    <div className="w-full h-full flex items-center justify-center">
+                                      <div className="w-2 h-2 bg-white rounded-full"></div>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                    
+                    {selectedDiagnostics.length > 0 && (
+                      <div className="bg-gradient-to-r from-green-600 to-blue-600 rounded-2xl p-6 text-white">
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="flex items-center space-x-3">
+                            <Calculator className="w-6 h-6" />
+                            <span className="text-lg font-semibold">Diagnostics sélectionnés</span>
+                          </div>
+                          <span className="text-lg font-bold">{selectedDiagnostics.length} diagnostic{selectedDiagnostics.length > 1 ? 's' : ''}</span>
+                        </div>
+                        
+                        <button 
+                          onClick={() => setCurrentStep('devis')}
+                          className="w-full bg-white/20 hover:bg-white/30 text-white py-3 rounded-xl font-semibold transition-colors btn-mobile"
+                        >
+                          Calculer le devis
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Step 4: Devis Final */}
+                {currentStep === 'devis' && (
+                  <div className="space-y-6">
+                    <div className="text-center">
+                      <h2 className="text-2xl font-bold text-white mb-2">Devis détaillé</h2>
+                      <p className="text-gray-300">
+                        {propertyTypes.find(t => t.id === selectedType)?.name} - {selectedSize}
+                      </p>
+                    </div>
+                    
+                    <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+                      <h3 className="text-xl font-semibold text-white mb-4">Détail des prestations</h3>
+                      
+                      <div className="space-y-3 mb-6">
+                        {selectedDiagnostics.map(diagnosticId => {
+                          const diagnostic = diagnostics.find(d => d.id === diagnosticId);
+                          const price = priceConfig[selectedType]?.[selectedSize]?.[diagnosticId] || 0;
+                          const IconComponent = diagnostic?.icon;
+                          
+                          return (
+                            <div key={diagnosticId} className="flex items-center justify-between py-2 border-b border-white/10">
+                              <div className="flex items-center space-x-3">
+                                <div className={`w-8 h-8 ${diagnostic?.color} rounded-full flex items-center justify-center`}>
+                                  {IconComponent && <IconComponent className="w-4 h-4 text-white" />}
+                                </div>
+                                <span className="text-white font-medium">{diagnostic?.name}</span>
+                              </div>
+                              <span className="text-white font-semibold">{price.toFixed(2)}€</span>
+                            </div>
+                          );
+                        })}
                       </div>
                       
-                      {selectedProducts.length >= 3 && (
-                        <div className="flex justify-between items-center text-green-400 text-sm mb-2">
-                          <span>Remise ({selectedProducts.length} diag.) -{Math.round(discount * 100)}%</span>
-                          <span className="font-semibold">-{Math.round(subtotal * discount)}€</span>
-                        </div>
-                      )}
-                      
-                      <div className="flex justify-between items-center text-xl font-bold text-white pt-2 border-t border-slate-600">
-                        <span>Total</span>
-                        <span className="text-blue-400">{Math.round(total)}€</span>
+                      <div className="border-t border-white/20 pt-4 space-y-3">
+                        {(() => {
+                          const { subtotal, discount, discountAmount, total } = calculatePricing();
+                          return (
+                            <>
+                              <div className="flex justify-between text-white">
+                                <span>Sous-total</span>
+                                <span className="font-semibold">{subtotal.toFixed(2)}€</span>
+                              </div>
+                              
+                              {selectedDiagnostics.length >= 3 && discount > 0 && (
+                                <div className="flex justify-between text-green-400">
+                                  <span>Remise ({selectedDiagnostics.length} diagnostics) - {Math.round(discount * 100)}%</span>
+                                  <span className="font-semibold">-{discountAmount.toFixed(2)}€</span>
+                                </div>
+                              )}
+                              
+                              <div className="flex justify-between text-xl font-bold text-white pt-3 border-t border-white/20">
+                                <span>Total TTC</span>
+                                <span className="text-green-400">{total.toFixed(2)}€</span>
+                              </div>
+                            </>
+                          );
+                        })()}
                       </div>
                     </div>
+                    
+                    <button 
+                      onClick={resetApp}
+                      className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 rounded-xl font-semibold transition-all btn-mobile"
+                    >
+                      Nouveau devis
+                    </button>
                   </div>
                 )}
               </div>
@@ -551,9 +600,8 @@
           );
         };
 
-        // Rendu
-        const { useState, useEffect } = React;
-        ReactDOM.render(<MobileCalculatorApp />, document.getElementById('root'));
+        // Rendu de l'application
+        ReactDOM.render(<DiagnosticApp />, document.getElementById('root'));
 
         // Service Worker pour PWA
         if ('serviceWorker' in navigator) {
